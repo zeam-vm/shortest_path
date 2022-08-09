@@ -1,7 +1,7 @@
-defmodule ShortestPath.DijkstraTest do
+defmodule ShortestPath.Dijkstra.MainATest do
   use ExUnit.Case
-  doctest ShortestPath.Dijkstra
-  alias ShortestPath.Dijkstra
+  doctest ShortestPath.Dijkstra.MainA
+  alias ShortestPath.Dijkstra.MainA
 
   test "solve case1 by Dijkstra" do
     [[n, m] | inputs] =
@@ -10,7 +10,7 @@ defmodule ShortestPath.DijkstraTest do
       |> Enum.reject(& &1 == "")
       |> Enum.map(fn s -> String.split(s, " ") |> Enum.map(&String.to_integer/1) end)
 
-    outputs = Dijkstra.main(n, m, inputs)
+    outputs = MainA.main(n, m, inputs)
 
     answer =
       outputs

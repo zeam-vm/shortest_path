@@ -1,4 +1,4 @@
-defmodule ShortestPath.Dijkstra do
+defmodule ShortestPath.Dijkstra.MainA do
   @inf 1_000_000_000_000
 
   @spec main(pos_integer(), pos_integer(), list()) :: list()

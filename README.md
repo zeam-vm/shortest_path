@@ -1,6 +1,6 @@
 # ShortestPath
 
-Shortest path problem from all nodes by Elixir and other languages
+Shortest path problem of an undirected graph from all nodes by Elixir and other languages
 
 ## License
 

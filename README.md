@@ -2,6 +2,17 @@
 
 Shortest path problem of an undirected graph from all nodes by Elixir and other languages
 
+## Usage
+
+### Generate an input case
+
+```elixir
+iex> :rand.seed(:exsss)
+iex> ShortestPath.InputCaseGenerator.generate("sample_01.txt", 4, 6) # file_name, n, m
+```
+
+You'll get `test/support/in/sample_01.txt`.
+
 ## License
 
 Copyright (c) ShortestPathSolvers 2022 

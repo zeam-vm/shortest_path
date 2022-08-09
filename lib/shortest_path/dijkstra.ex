@@ -1,9 +1,8 @@
 defmodule ShortestPath.Dijkstra do
-  @inf 1000_000_000
+  @inf 1_000_000_000_000
 
-  @doc """
-  """
-  def main(n, m, vicinities) do
+  @spec main(pos_integer(), pos_integer(), list()) :: list()
+  def main(n, _, vicinities) do
     # 各頂点
     node_map =
       vicinities
@@ -12,25 +11,34 @@ defmodule ShortestPath.Dijkstra do
         # 逆方向分も追加
         |> Map.update(d, %{s => w}, & Map.put(&1, s, w))
       end)
-      |> IO.inspect()
 
-    # 探索済みノード
-    # 出発地点は距離0, それ以外は距離INF
-    acc = for i <- 2..n, into: %{1 => 0}, do: {i, @inf}
+    # 各ノードにダイクストラ法を実行
+    for start_node <- 1..n do
 
-    # 未探索ノード
-    unsearched = [{1, 0}]
+      # 探索済みノード
+      # 出発地点は距離0, それ以外は距離INF
+      acc =
+        (for i <- 1..n, into: %{}, do: {i, @inf})
+        |> Map.put(start_node, 0)
 
-    solve(unsearched, node_map, acc)
+      # 未探索ノード
+      unsearched = [{start_node, 0}]
+
+      dijkstra(unsearched, node_map, acc)
+    end
   end
 
-  def solve([], _, acc), do: acc
-  def solve(unsearched, node_map, acc) do
+
+  @spec dijkstra(list(), map(), map()) :: list()
+  def dijkstra(unsearched, node_map, acc)
+
+  def dijkstra([], _, acc), do: acc |> Map.values()
+  def dijkstra(unsearched, node_map, acc) do
     # 未探索ノードの中から最短のものを取得
     [{node, w} | unsearched] = Enum.sort_by(unsearched, &elem(&1, 1))
 
     # 同じノードで最短以外のものがあれば除去しておく
-    unsearched = unsearched |> Enum.reject(& elem(&1, 1) == node)
+    unsearched = unsearched |> Enum.reject(& elem(&1, 0) == node)
 
     # 取得したノードに隣接するノードを検索し、
     new_unsearched =
@@ -46,11 +54,11 @@ defmodule ShortestPath.Dijkstra do
           Map.put(acc, nn, ww)
         end)
 
-    IO.inspect({node, w}, label: "取得したノード")
-    IO.inspect(unsearched ++ new_unsearched, label: "未探索ノード")
-    IO.inspect(acc, label: "探索済みノード")
-    IO.puts("----------------------------------")
+    # IO.inspect({node, w}, label: "取得したノード")
+    # IO.inspect(unsearched ++ new_unsearched, label: "未探索ノード")
+    # IO.inspect(acc, label: "探索済みノード")
+    # IO.puts("----------------------------------")
 
-    solve(unsearched ++ new_unsearched, node_map, acc)
+    dijkstra(unsearched ++ new_unsearched, node_map, acc)
   end
 end

@@ -4,11 +4,11 @@ defmodule ShortestPath.Dijkstra.MainATest do
   alias ShortestPath.Dijkstra.MainA
 
   test "solve sample_01 by Dijkstra" do
-    {n, m, inputs} = ShortestPath.Dijkstr.InputReader.read("sample_01.txt")
+    {n, m, inputs} = ShortestPath.Dijkstra.InputReader.read("sample_01.txt")
 
     actual =
       MainA.main(n, m, inputs)
-      |> ShortestPath.Dijkstr.OutputWriter.puts()
+      |> ShortestPath.Dijkstra.OutputWriter.puts()
 
     expected =
       File.read!("test/support/out/sample_01.txt")
@@ -18,11 +18,11 @@ defmodule ShortestPath.Dijkstra.MainATest do
   end
 
   test "solve sample_02 by Dijkstra" do
-    {n, m, inputs} = ShortestPath.Dijkstr.InputReader.read("sample_01.txt")
+    {n, m, inputs} = ShortestPath.Dijkstra.InputReader.read("sample_01.txt")
 
     actual =
       MainA.main(n, m, inputs)
-      |> ShortestPath.Dijkstr.OutputWriter.puts()
+      |> ShortestPath.Dijkstra.OutputWriter.puts()
 
     expected =
       File.read!("test/support/out/sample_01.txt")

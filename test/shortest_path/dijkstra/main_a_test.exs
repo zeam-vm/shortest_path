@@ -17,15 +17,15 @@ defmodule ShortestPath.Dijkstra.MainATest do
     assert actual == expected
   end
 
-  test "solve case1 by Dijkstra" do
-    {n, m, inputs} = ShortestPath.Dijkstr.InputReader.read("case1.txt")
+  test "solve sample_02 by Dijkstra" do
+    {n, m, inputs} = ShortestPath.Dijkstr.InputReader.read("sample_01.txt")
 
     actual =
       MainA.main(n, m, inputs)
       |> ShortestPath.Dijkstr.OutputWriter.puts()
 
     expected =
-      File.read!("test/support/out/case1.txt")
+      File.read!("test/support/out/sample_01.txt")
       |> String.trim()
 
     assert actual == expected

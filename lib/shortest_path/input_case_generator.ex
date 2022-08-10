@@ -14,16 +14,7 @@ defmodule ShortestPath.InputCaseGenerator do
 
     ```
     iex> :rand.seed(:exsss)
-    {%{
-      bits: 58,
-      jump: #Function<3.34006561/1 in :rand.exsplus_jump>,
-      next: #Function<0.34006561/1 in :rand.exsss_next>,
-      type: :exsss,
-      uniform: #Function<1.34006561/1 in :rand.exsss_uniform>,
-      uniform_n: #Function<2.34006561/2 in :rand.exsss_uniform>
-    }, [159490999984126049 | 263038410355716720]}
     iex> ShortestPath.InputCaseGenerator.generate("sample_01.txt", 4, 6)
-    :ok
     ```
   """
   def generate(file, n, m, x \\ @size_grid, y \\ @size_grid) do

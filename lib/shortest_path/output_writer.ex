@@ -1,4 +1,4 @@
-defmodule ShortestPath.Dijkstra.OutputWriter do
+defmodule ShortestPath.OutputWriter do
   def puts(outputs) do
     outputs
     |> Enum.with_index()

@@ -1,4 +1,4 @@
-defmodule ShortestPath.Dijkstr.InputReader do
+defmodule ShortestPath.Dijkstra.InputReader do
   @support_in "test/support/in"
 
   def read(file) do

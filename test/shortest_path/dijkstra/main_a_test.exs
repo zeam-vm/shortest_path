@@ -3,7 +3,7 @@ defmodule ShortestPath.Dijkstra.MainATest do
   doctest ShortestPath.Dijkstra.MainA
   alias ShortestPath.Dijkstra.MainA
 
-  test "solve case1 by Dijkstra" do
+  test "solve sample_01 by Dijkstra" do
     {n, m, inputs} = ShortestPath.Dijkstr.InputReader.read("sample_01.txt")
 
     actual =

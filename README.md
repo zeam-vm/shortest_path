@@ -2,6 +2,64 @@
 
 Shortest path problem of an undirected graph from all nodes by Elixir and other languages
 
+## Problem statement
+
+Given is an undirected graph with *N* vertices and *M* edges.
+Vertices are in *xy*-plain. 
+The *i*-th vertice *Vi* has a position *(Xi, Yi)* for visualization of the graph.
+The *j*-th edge is connected between *Vaj* and *Vbj* has a weight of *Wj*.
+Find the shortest path between all vertices.
+
+## Constraints
+
+$$ 2 \leq N $$
+
+$$ 1 \leq M $$
+
+$$ 1 \leq i, a, b \leq N$$
+
+$$ 1 \leq j \leq M$$
+
+$$ 1 \leq Wj \leq 1000 $$
+
+## Input
+
+Input is given the file in `test/support/in` in the following format:
+
+```
+N M
+X1 Y1
+...
+XN YN
+Va1 Vb1 W1
+...
+VaM VbM WM
+```
+
+You can use `ShortestPath.InputReader.read/1` for obtaining $N$, $M$, the list of the lists `[Vaj, Vbj, Wj]` from the file.
+
+## Output
+
+Output the distance *Da,b* of the shortest path between the vertice *Va* and *Vb* for all vertices in the following format, for reducing amount of output:
+
+```
+N
+D1,2 D1,3 ... D1,N
+D2,3 D2,4 ... D2,N
+...
+DN-1,N
+```
+
+You can use `ShortestPath.OutputWriter.puts/1` for outputing in the above format.
+
+## Sample inputs
+
+See the directory `test/support/in`.
+
+## Sample outputs
+
+See the directory `test/support/out`.
+
 ## Usage
 
 ### Generate an input case

@@ -13,9 +13,13 @@ Find the shortest path between all vertices.
 ## Constraints
 
 $$ 2 \leq N $$
+
 $$ 1 \leq M $$
+
 $$ 1 \leq i, a, b \leq N$$
+
 $$ 1 \leq j \leq M$$
+
 $$ 1 \leq Wj \leq 1000 $$
 
 ## Input

@@ -5,14 +5,16 @@ defmodule ShortestPath.Dijkstra.MainATest do
 
   test "solve case1 by Dijkstra" do
     {n, m, inputs} = ShortestPath.Dijkstr.InputReader.read("sample_01.txt")
-    outputs = MainA.main(n, m, inputs)
 
-    answer =
-      outputs
-      |> Enum.map(& Enum.join(&1, " "))
-      |> Enum.join("\n")
+    actual =
+      MainA.main(n, m, inputs)
+      |> ShortestPath.Dijkstr.OutputWriter.puts()
 
-    assert answer == File.read!("test/support/out/sample_01.txt")
+    expected =
+      File.read!("test/support/out/sample_01.txt")
+      |> String.trim()
+
+    assert actual == expected
   end
 
 end

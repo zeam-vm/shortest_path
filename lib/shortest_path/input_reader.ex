@@ -1,6 +1,9 @@
-defmodule ShortestPath.Dijkstra.InputReader do
+defmodule ShortestPath.InputReader do
   @support_in "test/support/in"
 
+  @doc """
+  Reads a given file and returns a tuple of *N*, *M* and the list of the lists `[Vaj, Vbj, Wj]`.
+  """
   def read(file) do
     stream =
       Path.join(@support_in, file)

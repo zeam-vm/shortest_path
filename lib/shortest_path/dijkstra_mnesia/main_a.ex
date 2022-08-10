@@ -13,7 +13,9 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     end
     |> case do
       :ok ->
-        case Mnesia.create_table(GraphEntry, attributes: [:entry_id, :left_entry_id, :right_entry_id, :vertex, :weight]) do
+        case Mnesia.create_table(GraphEntry,
+               attributes: [:entry_id, :left_entry_id, :right_entry_id, :vertex, :weight]
+             ) do
           {:atomic, :ok} -> :ok
           {:aborted, {:already_exists, GraphEntry}} -> :ok
           {:aborted, reason} -> {:error, reason}
@@ -26,10 +28,12 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
               {:aborted, reason} -> {:error, reason}
             end
 
-          {:error, reason} -> {:error, reason}
+          {:error, reason} ->
+            {:error, reason}
         end
 
-      {:error, reason} -> {:error, reason}
+      {:error, reason} ->
+        {:error, reason}
     end
   end
 
@@ -56,7 +60,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
       |> String.split(" ")
       |> Enum.map(&String.to_integer/1)
 
-    {:atomic, _ } =
+    {:atomic, _} =
       Mnesia.transaction(fn ->
         Mnesia.write({GraphStatus, 0, n, m, 0})
       end)
@@ -83,13 +87,13 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
         true -> raise RuntimeError, "Exists edge from a node to the same node."
       end
     end)
-    |> Stream.map(fn {n1, n2, w} -> write_graph(n1, n2, w)  end)
+    |> Stream.map(fn {n1, n2, w} -> write_graph(n1, n2, w) end)
     |> Enum.take(m)
   end
 
   def current_weight(n1, n2) when n1 < n2 do
-    {:atomic, w}
-      = Mnesia.transaction(fn ->
+    {:atomic, w} =
+      Mnesia.transaction(fn ->
         [{Graph, ^n1, e}] = Mnesia.read({Graph, n1})
         current_weight_s(e, n2)
       end)
@@ -116,16 +120,18 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
   end
 
   def new_entry() do
-    {:atomic, [{GraphStatus, 0, _n, _m, e_num}]}
-      = Mnesia.transaction(fn ->
+    {:atomic, [{GraphStatus, 0, _n, _m, e_num}]} =
+      Mnesia.transaction(fn ->
         case Mnesia.read({GraphStatus, 0}) do
-          [] -> raise RuntimeError, "Fail to fetch GraphStatus"
+          [] ->
+            raise RuntimeError, "Fail to fetch GraphStatus"
 
           [{GraphStatus, 0, n, m, e_num}] ->
             Mnesia.write({GraphStatus, 0, n, m, e_num + 1})
             Mnesia.read({GraphStatus, 0})
 
-          _ -> raise RuntimeError, "Fail to fetch GraphStatus"
+          _ ->
+            raise RuntimeError, "Fail to fetch GraphStatus"
         end
       end)
 
@@ -141,8 +147,9 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
           Mnesia.write({GraphEntry, eid, :end, :end, n2, w})
           Mnesia.write({Graph, n1, eid})
 
-        [{Graph, ^n1, entry}] -> add_entry(entry, n2, w)
-        end
+        [{Graph, ^n1, entry}] ->
+          add_entry(entry, n2, w)
+      end
     end)
   end
 
@@ -151,6 +158,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
       case Mnesia.read({GraphEntry, entry}) do
         [{GraphEntry, ^entry, :end, :end, n1, w1}] ->
           eid = new_entry()
+
           cond do
             n1 < n ->
               Mnesia.write({GraphEntry, entry, :end, eid, n1, w1})
@@ -168,8 +176,11 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
 
         [{GraphEntry, ^entry, left, right, n1, w1}] ->
           cond do
-            n1 < n -> add_entry(right, n, w)
-            n < n1 -> add_entry(left, n, w)
+            n1 < n ->
+              add_entry(right, n, w)
+
+            n < n1 ->
+              add_entry(left, n, w)
 
             true ->
               if w1 == w do

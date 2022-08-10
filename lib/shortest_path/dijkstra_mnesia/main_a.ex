@@ -1,4 +1,4 @@
-defmodule ShortestPath.Dijkstr.A.Main do
+defmodule ShortestPath.DijkstraMnesia.MainA do
   alias :mnesia, as: Mnesia
   @support_in "test/support/in"
 

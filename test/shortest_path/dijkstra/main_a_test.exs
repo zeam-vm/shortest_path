@@ -4,12 +4,7 @@ defmodule ShortestPath.Dijkstra.MainATest do
   alias ShortestPath.Dijkstra.MainA
 
   test "solve case1 by Dijkstra" do
-    [[n, m] | inputs] =
-      File.read!("test/support/in/case1.txt")
-      |> String.split("\n")
-      |> Enum.reject(& &1 == "")
-      |> Enum.map(fn s -> String.split(s, " ") |> Enum.map(&String.to_integer/1) end)
-
+    {n, m, inputs} = ShortestPath.Dijkstr.InputReader.read("sample_01.txt")
     outputs = MainA.main(n, m, inputs)
 
     answer =
@@ -17,7 +12,7 @@ defmodule ShortestPath.Dijkstra.MainATest do
       |> Enum.map(& Enum.join(&1, " "))
       |> Enum.join("\n")
 
-    assert answer == File.read!("test/support/out/case1.txt")
+    assert answer == File.read!("test/support/out/sample_01.txt")
   end
 
 end

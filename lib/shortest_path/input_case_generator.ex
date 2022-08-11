@@ -36,7 +36,10 @@ defmodule ShortestPath.InputCaseGenerator do
     if File.exists?(file) do
       {:error, "File #{file} has already existed."}
     else
-      File.write(file, new_case(n, m, x, y))
+      case File.write(file, new_case(n, m, x, y)) do
+        :ok -> {:ok, file}
+        {:error, reason} -> {:error, reason}
+      end
     end
   end
 

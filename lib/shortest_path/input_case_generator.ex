@@ -18,7 +18,7 @@ defmodule ShortestPath.InputCaseGenerator do
     ```
   """
   def generate(file, n, m, x \\ @size_grid, y \\ @size_grid) do
-    generate_s(@path, file, n, m, x, y)
+    generate_s(@path, file, n, m, x, y, true)
   end
 
   @doc """
@@ -27,13 +27,13 @@ defmodule ShortestPath.InputCaseGenerator do
   def generate_priv(file, n, m, x \\ @size_grid, y \\ @size_grid) do
     path = Application.app_dir(:shortest_path, "priv")
     File.mkdir_p(path)
-    generate_s(path, file, n, m, x, y)
+    generate_s(path, file, n, m, x, y, false)
   end
 
-  defp generate_s(path, file, n, m, x, y) do
+  defp generate_s(path, file, n, m, x, y, check_exists?) do
     file = Path.join(path, file)
 
-    if File.exists?(file) do
+    if check_exists? and File.exists?(file) do
       {:error, "File #{file} has already existed."}
     else
       case File.write(file, new_case(n, m, x, y)) do

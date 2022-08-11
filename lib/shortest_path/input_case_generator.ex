@@ -8,7 +8,7 @@ defmodule ShortestPath.InputCaseGenerator do
   @size_grid 16
 
   @doc """
-  Generates a file of an input case.
+  Generates a file of an input case in `test/support/in`.
 
   ## Examples
 
@@ -18,7 +18,20 @@ defmodule ShortestPath.InputCaseGenerator do
     ```
   """
   def generate(file, n, m, x \\ @size_grid, y \\ @size_grid) do
-    file = Path.join(@path, file)
+    generate_s(@path, file, n, m, x, y)
+  end
+
+  @doc """
+  Generates a file of an input case in `Applicatoin.app_dir(:shortest_path, "priv")`.
+  """
+  def generate_priv(file, n, m, x \\ @size_grid, y \\ @size_grid) do
+    path = Application.app_dir(:shortest_path, "priv")
+    File.mkdir_p(path)
+    generate_s(path, file, n, m, x, y)
+  end
+
+  defp generate_s(path, file, n, m, x, y) do
+    file = Path.join(path, file)
 
     if File.exists?(file) do
       {:error, "File #{file} has already existed."}

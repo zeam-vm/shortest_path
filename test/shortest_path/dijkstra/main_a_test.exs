@@ -3,28 +3,26 @@ defmodule ShortestPath.Dijkstra.MainATest do
   doctest ShortestPath.Dijkstra.MainA
   alias ShortestPath.Dijkstra.MainA
   @path_in "test/support/in"
+  @path_out "test/support/out"
 
-  test "solve sample_01 by Dijkstra" do
+  def test_case(file, module, solver_module) do
     actual =
-      Path.join(@path_in, "sample_01.txt")
-      |> ShortestPath.SolverFromWeightedEdgeList.main_p(MainA)
+      Path.join(@path_in, file)
+      |> ShortestPath.SolverFromFile.main_pp(module, solver_module)
 
     expected =
-      File.read!("test/support/out/sample_01.txt")
+      Path.join(@path_out, file)
+      |> File.read!()
       |> String.trim()
 
     assert actual == expected
   end
 
+  test "solve sample_01 by Dijkstra" do
+    test_case("sample_01.txt", MainA, ShortestPath.SolverFromWeightedEdgeList)
+  end
+
   test "solve sample_02 by Dijkstra" do
-    actual =
-      Path.join(@path_in, "sample_02.txt")
-      |> ShortestPath.SolverFromWeightedEdgeList.main_p(MainA)
-
-    expected =
-      File.read!("test/support/out/sample_02.txt")
-      |> String.trim()
-
-    assert actual == expected
+    test_case("sample_02.txt", MainA, ShortestPath.SolverFromWeightedEdgeList)
   end
 end

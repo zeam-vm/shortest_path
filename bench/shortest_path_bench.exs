@@ -20,30 +20,38 @@ inputs =
   |> Enum.map(fn {n, m, {:ok, file}} -> {"N,M = #{n},#{m}", {n, m, file}} end)
   |> Map.new()
 
-Benchee.run(
-  %{
-    "Dijkstra.MainA" => fn {_n, _m, file} ->
-      pid =
-        spawn(fn ->
-          receive do
-            {:r_pid, r_pid} ->
-              ShortestPath.SolverFromWeightedEdgeList.main_p(file, ShortestPath.Dijkstra.MainA)
-              send(r_pid, :ok)
-          after
-            1000 -> :error
-          end
-        end)
+benchmarks =
+  [{"Dijkstra.MainA", ShortestPath.Dijkstra.MainA, ShortestPath.SolverFromWeightedEdgeList}]
+  |> Enum.map(fn {name, module, solver_module} ->
+    {
+      name,
+      fn {_n, _m, file} ->
+        pid =
+          spawn(fn ->
+            receive do
+              {:r_pid, r_pid} ->
+                ShortestPath.SolverFromFile.main_pp(file, module, solver_module)
+                send(r_pid, :ok)
+            after
+              1000 -> :error
+            end
+          end)
 
-      send(pid, {:r_pid, self()})
+        send(pid, {:r_pid, self()})
 
-      receive do
-        :ok -> :ok
-      after
-        2000 ->
-          Process.exit(pid, :normal)
+        receive do
+          :ok -> :ok
+        after
+          2000 ->
+            Process.exit(pid, :normal)
+        end
       end
-    end
-  },
+    }
+  end)
+  |> Map.new()
+
+Benchee.run(
+  benchmarks,
   inputs: inputs,
   memory_time: 2
 )

@@ -14,7 +14,7 @@ Find the shortest path between all vertices.
 
 $$ 2 \leq N $$
 
-$$ 1 \leq M $$
+$$ 1 \leq M \leq \frac{1}{2}N(N-1)$$
 
 $$ 1 \leq i, a, b \leq N$$
 

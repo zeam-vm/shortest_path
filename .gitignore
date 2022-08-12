@@ -26,4 +26,4 @@ shortest_path-*.tar
 /tmp/
 
 # Mnesia
-/Mnesia
+/Mnesia*

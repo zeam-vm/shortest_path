@@ -1,6 +1,7 @@
 defmodule ShortestPath.DijkstraMnesia.MainA do
+  @behaviour ShortestPath.SolverFromFile
   alias :mnesia, as: Mnesia
-  @support_in "test/support/in"
+  @buffer_size 65536
 
   def init() do
     Mnesia.create_schema([node()])
@@ -47,10 +48,10 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     Mnesia.stop()
   end
 
-  def main(file) do
-    stream =
-      Path.join(@support_in, file)
-      |> File.stream!([:read], :line)
+  @impl true
+  @spec main_p(Path.t(), module()) :: String.t()
+  def main_p(file, _module) do
+    stream = File.stream!(file, [read_ahead: @buffer_size], :line)
 
     [n, m] =
       stream
@@ -89,6 +90,17 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     end)
     |> Stream.map(fn {n1, n2, w} -> write_graph(n1, n2, w) end)
     |> Enum.take(m)
+
+    "#{n}" <>
+      (1..n
+       |> Enum.map(fn n1 ->
+         (n1 + 1)..n
+         |> Enum.map(fn n2 ->
+           "#{current_weight(n1, n2)}"
+         end)
+         |> Enum.join(" ")
+       end)
+       |> Enum.join("\n"))
   end
 
   def current_weight(n1, n2) when n1 < n2 do

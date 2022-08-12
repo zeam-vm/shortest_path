@@ -65,7 +65,7 @@ See the directory `test/support/out`.
 ### Run benchmarks
 
 ```
-mix run -e bench/shortest_path_bench.exs
+mix run -r bench/shortest_path_bench.exs
 ```
 
 If `ips` and `average` are `0.50` and `2.00s`, respectvely, it means time out of the execution. 

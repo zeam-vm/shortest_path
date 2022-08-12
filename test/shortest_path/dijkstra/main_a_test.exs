@@ -2,13 +2,12 @@ defmodule ShortestPath.Dijkstra.MainATest do
   use ExUnit.Case
   doctest ShortestPath.Dijkstra.MainA
   alias ShortestPath.Dijkstra.MainA
+  @path_in "test/support/in"
 
   test "solve sample_01 by Dijkstra" do
-    {n, m, inputs} = ShortestPath.InputReader.read("sample_01.txt")
-
     actual =
-      MainA.main(n, m, inputs)
-      |> ShortestPath.OutputWriter.puts()
+      Path.join(@path_in, "sample_01.txt")
+      |> ShortestPath.SolverFromWeightedEdgeList.main_p(MainA)
 
     expected =
       File.read!("test/support/out/sample_01.txt")
@@ -18,11 +17,9 @@ defmodule ShortestPath.Dijkstra.MainATest do
   end
 
   test "solve sample_02 by Dijkstra" do
-    {n, m, inputs} = ShortestPath.InputReader.read("sample_02.txt")
-
     actual =
-      MainA.main(n, m, inputs)
-      |> ShortestPath.OutputWriter.puts()
+      Path.join(@path_in, "sample_02.txt")
+      |> ShortestPath.SolverFromWeightedEdgeList.main_p(MainA)
 
     expected =
       File.read!("test/support/out/sample_02.txt")

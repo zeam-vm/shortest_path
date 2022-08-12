@@ -3,7 +3,7 @@ defmodule ShortestPath.InputCaseGenerator do
   A generator of input case for an undirected graph.
   """
 
-  @path "test/support/in"
+  @path_in "test/support/in"
   @weight_max 1_000
   @size_grid 16
 
@@ -18,7 +18,7 @@ defmodule ShortestPath.InputCaseGenerator do
     ```
   """
   def generate(file, n, m, x \\ @size_grid, y \\ @size_grid) do
-    generate_s(@path, file, n, m, x, y, true)
+    generate_s(@path_in, file, n, m, x, y, true)
   end
 
   @doc """

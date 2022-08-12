@@ -2,6 +2,7 @@ defmodule ShortestPath.OutputWriter do
   @doc """
   Returns a string for IO.puts/2 from the given list of the list that contains all distances between all vertices.
   """
+  @spec puts(ShortestPath.SolverFromWeightedEdgeList.weight_between_nodes_list()) :: String.t()
   def puts(outputs) do
     "#{Enum.count(outputs)}\n" <>
       (outputs

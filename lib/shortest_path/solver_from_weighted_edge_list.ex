@@ -6,13 +6,9 @@ defmodule ShortestPath.SolverFromWeightedEdgeList do
 
   @spec main_p(Path.t(), module()) :: String.t()
   def main_p(file, module) do
-    if function_exported?(module, :main, 3) do
-      {n, m, inputs} = ShortestPath.InputReader.read_directly(file)
+    {n, m, inputs} = ShortestPath.InputReader.read_directly(file)
 
-      Function.capture(module, :main, 3).(n, m, inputs)
-      |> ShortestPath.OutputWriter.puts()
-    else
-      raise RuntimeError, "#{inspect module} isn't an implementation of ShortestPath.SolverFromWeightedEdgeList."
-    end
+    Function.capture(module, :main, 3).(n, m, inputs)
+    |> ShortestPath.OutputWriter.puts()
   end
 end

@@ -21,7 +21,18 @@ inputs =
   |> Map.new()
 
 benchmarks =
-  [{"Dijkstra.MainA", ShortestPath.Dijkstra.MainA, ShortestPath.SolverFromWeightedEdgeList}]
+  [
+    # {
+    #  "Dijkstra.MainA",
+    #  ShortestPath.Dijkstra.MainA,
+    #  ShortestPath.SolverFromWeightedEdgeList
+    # },
+    {
+      "DijkstraMnesia.MainA",
+      ShortestPath.DijkstraMnesia.MainA,
+      ShortestPath.DijkstraMnesia.MainA
+    }
+  ]
   |> Enum.map(fn {name, module, solver_module} ->
     {
       name,
@@ -30,7 +41,13 @@ benchmarks =
           spawn(fn ->
             receive do
               {:r_pid, r_pid} ->
-                ShortestPath.SolverFromFile.main_pp(file, module, solver_module)
+                try do
+                  ShortestPath.SolverFromFile.call_init(solver_module)
+                  ShortestPath.SolverFromFile.main_pp(file, module, solver_module)
+                after
+                  ShortestPath.SolverFromFile.call_finish(solver_module)
+                end
+
                 send(r_pid, :ok)
             after
               1000 -> :error

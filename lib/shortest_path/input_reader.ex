@@ -1,5 +1,5 @@
 defmodule ShortestPath.InputReader do
-  @support_in "test/support/in"
+  @path_in "test/support/in"
   @buffer_size 65536
 
   @doc """
@@ -9,7 +9,7 @@ defmodule ShortestPath.InputReader do
           {pos_integer(), pos_integer(),
            ShortestPath.SolverFromWeightedEdgeList.weighted_edge_list()}
   def read(file) do
-    read_directly(Path.join(@support_in, file))
+    read_directly(Path.join(@path_in, file))
   end
 
   @doc """

@@ -1,15 +1,19 @@
 defmodule ShortestPath.Dijkstra.MainA do
   @behaviour ShortestPath.SolverFromWeightedEdgeList
+  @moduledoc """
+  Simple Dijkstra's algorithm based on https://products.sint.co.jp/topsic/blog/dijkstras-algorithm.
+  """
   @inf 1_000_000_000_000
 
   @doc """
-  Returns a list of lists of weights between nodes.
+  Returns a list of lists weights between nodes from a list of lists of weighted edges.
   """
   @spec main(
           pos_integer(),
           pos_integer(),
           ShortestPath.SolverFromWeightedEdgeList.weighted_edge_list()
-        ) :: ShortestPath.SolverFromWeightedEdgeList.weight_between_nodes_list()
+        ) ::
+          ShortestPath.SolverFromWeightedEdgeList.weight_between_nodes_list()
   @impl true
   def main(n, _, vicinities) do
     # 各頂点
@@ -36,6 +40,7 @@ defmodule ShortestPath.Dijkstra.MainA do
     end
   end
 
+  @doc false
   @spec dijkstra(list(), map(), map()) ::
           ShortestPath.SolverFromWeightedEdgeList.weight_between_nodes_list()
   def dijkstra([], _, acc), do: acc |> Map.values()

@@ -27,8 +27,7 @@ Benchee.run(
         spawn(fn ->
           receive do
             {:r_pid, r_pid} ->
-              {n, m, i} = ShortestPath.InputReader.read_directly(file)
-              ShortestPath.Dijkstra.MainA.main(n, m, i)
+              ShortestPath.SolverFromWeightedEdgeList.main_p(file, ShortestPath.Dijkstra.MainA)
               send(r_pid, :ok)
           after
             1000 -> :error

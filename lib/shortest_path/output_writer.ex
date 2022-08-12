@@ -1,4 +1,8 @@
 defmodule ShortestPath.OutputWriter do
+  @moduledoc """
+  Writer to a string from the results of weights between vertices.
+  """
+
   @doc """
   Returns a string for IO.puts/2 from the given list of the list that contains all distances between all vertices.
   """

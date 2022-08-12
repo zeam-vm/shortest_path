@@ -1,4 +1,7 @@
 defmodule ShortestPath.InputReader do
+  @moduledoc """
+  Reader from an input file.
+  """
   @path_in "test/support/in"
   @buffer_size 65536
 

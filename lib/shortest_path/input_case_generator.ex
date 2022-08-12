@@ -17,6 +17,8 @@ defmodule ShortestPath.InputCaseGenerator do
     iex> ShortestPath.InputCaseGenerator.generate("sample_01.txt", 4, 6)
     ```
   """
+  @spec generate(Path.t(), pos_integer(), pos_integer(), pos_integer(), pos_integer()) ::
+          {:ok, Path.t()} | {:error, File.posix()}
   def generate(file, n, m, x \\ @size_grid, y \\ @size_grid) do
     generate_s(@path_in, file, n, m, x, y, true)
   end
@@ -24,6 +26,8 @@ defmodule ShortestPath.InputCaseGenerator do
   @doc """
   Generates a file of an input case in `Applicatoin.app_dir(:shortest_path, "priv")`.
   """
+  @spec generate_priv(Path.t(), pos_integer(), pos_integer(), pos_integer(), pos_integer()) ::
+          {:ok, Path.t()} | {:error, File.posix()}
   def generate_priv(file, n, m, x \\ @size_grid, y \\ @size_grid) do
     path = Application.app_dir(:shortest_path, "priv")
     File.mkdir_p(path)
@@ -56,6 +60,7 @@ defmodule ShortestPath.InputCaseGenerator do
       iex> ShortestPath.InputCaseGenerator.new_case(3, 3)
       "3 3\\n16 0\\n0 32\\n16 0\\n2 3 680\\n1 2 110\\n1 3 439"
   """
+  @spec new_case(pos_integer(), pos_integer(), pos_integer(), pos_integer()) :: String.t()
   def new_case(n, m, x \\ @size_grid, y \\ @size_grid) do
     ["#{n} #{m}"]
     |> Kernel.++(

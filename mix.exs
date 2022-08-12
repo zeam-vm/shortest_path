@@ -4,7 +4,7 @@ defmodule ShortestPath.MixProject do
   def project do
     [
       app: :shortest_path,
-      version: "0.3.0",
+      version: "0.3.1",
       elixir: "~> 1.14-rc",
       start_permanent: Mix.env() == :prod,
       deps: deps(),

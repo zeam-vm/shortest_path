@@ -1,7 +1,14 @@
 defmodule ShortestPath.SolverFromWeightedEdgeList do
-  @type weighted_edge_list :: list(list(pos_integer()))
-  @type weight_between_nodes_list :: list(list(pos_integer()))
+  @moduledoc """
+  Behaviour of a solver from a list of lists of weighted edges.
+  """
 
+  @type weighted_edge_list() :: list(list(pos_integer()))
+  @type weight_between_nodes_list() :: list(list(pos_integer()))
+
+  @doc """
+  Returns a list of lists weights between nodes from a list of lists of weighted edges.
+  """
   @callback main(pos_integer(), pos_integer(), weighted_edge_list) :: weight_between_nodes_list
 
   @spec main_p(Path.t(), module()) :: String.t()

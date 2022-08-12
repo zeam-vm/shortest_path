@@ -1,7 +1,8 @@
 defmodule ShortestPath.Dijkstra.MainA do
+  @behaviour ShortestPath.SolverFromWeightedEdgeList
   @inf 1_000_000_000_000
 
-  @spec main(pos_integer(), pos_integer(), list()) :: list()
+  @impl true
   def main(n, _, vicinities) do
     # 各頂点
     node_map =

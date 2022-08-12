@@ -1,5 +1,6 @@
 defmodule ShortestPath.InputReader do
   @support_in "test/support/in"
+  @buffer_size 65536
 
   @doc """
   Reads a given file and returns a tuple of *N*, *M* and the list of the lists `[Vaj, Vbj, Wj]` in `test/support/in`.
@@ -14,7 +15,7 @@ defmodule ShortestPath.InputReader do
   """
   @spec read_directly(Path.t()) :: {pos_integer(), pos_integer(), list(list(pos_integer()))}
   def read_directly(file) do
-    stream = File.stream!(file, [], :line)
+    stream = File.stream!(file, [read_ahead: @buffer_size], :line)
 
     [n, m] =
       stream

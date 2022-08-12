@@ -24,4 +24,14 @@ defmodule ShortestPath.SolverFromWeightedEdgeList do
     Function.capture(module, :main, 3).(n, m, inputs)
     |> ShortestPath.OutputWriter.puts()
   end
+
+  @impl true
+  def init() do
+    :ok
+  end
+
+  @impl true
+  def finish() do
+    :ok
+  end
 end

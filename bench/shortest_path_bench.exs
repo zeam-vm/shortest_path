@@ -1,7 +1,7 @@
 :rand.seed(:exsss, {100, 101, 102})
 
 inputs =
-  Stream.unfold(3, fn
+  Stream.unfold(1, fn
     0 -> nil
     n -> {:math.pow(10, n) |> round(), n - 1}
   end)
@@ -23,9 +23,9 @@ inputs =
 benchmarks =
   [
     # {
-    #  "Dijkstra.MainA",
-    #  ShortestPath.Dijkstra.MainA,
-    #  ShortestPath.SolverFromWeightedEdgeList
+    # "Dijkstra.MainA",
+    # ShortestPath.Dijkstra.MainA,
+    # ShortestPath.SolverFromWeightedEdgeList
     # },
     {
       "DijkstraMnesia.MainA",

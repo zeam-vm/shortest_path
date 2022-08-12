@@ -94,14 +94,17 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     |> Enum.take(m)
 
     for start_node <- 1..n do
-      unsearched =
-        edges_from(start_node)
-        |> Enum.sort(fn n1, n2 ->
-          current_weight(start_node, n1) < current_weight(start_node, n2)
-        end)
+      #Task.async(fn ->
+        unsearched =
+          edges_from(start_node)
+          |> Enum.sort(fn n1, n2 ->
+            current_weight(start_node, n1) < current_weight(start_node, n2)
+          end)
 
-      dijkstra(start_node, unsearched)
+        dijkstra(start_node, unsearched)
+      #end)
     end
+    #|> Enum.map(&Task.await/1)
 
     "#{n}\n" <>
       (1..(n - 1)
@@ -116,22 +119,36 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
   end
 
   def dijkstra(_start_node, []), do: []
+  def dijkstra(start_node, node_list) do
+    updated_node_list =
+      node_list
+      |> Enum.map(fn node ->
+        #Task.async(fn ->
+          edges_from(node)
+          |> Enum.sort(fn n1, n2 ->
+            current_weight(start_node, n1) < current_weight(start_node, n2)
+          end)
+          |> Enum.map(fn n ->
+            #Task.async(fn ->
+              w = current_weight(start_node, node) + current_weight(node, n)
 
-  def dijkstra(start_node, [node | tail]) do
-    edges_from(node)
-    |> Enum.sort(fn n1, n2 ->
-      current_weight(start_node, n1) < current_weight(start_node, n2)
-    end)
-    |> Enum.map(fn n ->
-      w = current_weight(start_node, node) + current_weight(node, n)
+              if w < current_weight(start_node, n) do
+                write_graph(start_node, n, w, false)
+                n
+                # ^w = current_weight(start_node, n)
+              else
+                nil
+              end
+            #end)
+          end)
+          #|> Enum.map(&Task.await/1)
+        #end)
+      end)
+      #|> Enum.map(&Task.await/1)
+      |> List.flatten()
+      |> Enum.reject(&is_nil(&1))
 
-      if w < current_weight(start_node, n) do
-        write_graph(start_node, n, w, false)
-        # ^w = current_weight(start_node, n)
-      end
-    end)
-
-    dijkstra(start_node, tail)
+    dijkstra(start_node, updated_node_list)
   end
 
   def edges_from(n) do
@@ -141,7 +158,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     end)
     |> case do
       {:atomic, edges} -> edges
-      {:abort, {:no_exists, Graph}} -> @inf
+      {:aborted, {:no_exists, Graph}} -> @inf
     end
   end
 
@@ -268,7 +285,8 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
               end
           end
 
-        [] -> Mnesia.write({GraphEntry, entry, :end, :end, n, w})
+        [] ->
+          Mnesia.write({GraphEntry, entry, :end, :end, n, w})
       end
     end)
   end

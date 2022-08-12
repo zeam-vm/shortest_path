@@ -50,7 +50,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     Mnesia.delete_table(Graph)
     Mnesia.delete_table(GraphEntry)
     Mnesia.delete_table(GraphStatus)
-    Mnesia.stop()
+    # Mnesia.stop()
     :ok
   end
 
@@ -141,6 +141,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     end)
     |> case do
       {:atomic, edges} -> edges
+      {:abort, {:no_exists, Graph}} -> @inf
     end
   end
 
@@ -224,7 +225,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
 
   def add_entry(entry, n, w, raise_if_same_node?) do
     Mnesia.transaction(fn ->
-      case Mnesia.read({GraphEntry, entry}) do
+      case Mnesia.wread({GraphEntry, entry}) do
         [{GraphEntry, ^entry, :end, :end, n1, w1}] ->
           cond do
             n1 < n ->
@@ -266,6 +267,8 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
                 end
               end
           end
+
+        [] -> Mnesia.write({GraphEntry, entry, :end, :end, n, w})
       end
     end)
   end

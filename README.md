@@ -36,7 +36,7 @@ Va1 Vb1 W1
 VaM VbM WM
 ```
 
-You can use `ShortestPath.InputReader.read/1` for obtaining $N$, $M$, the list of the lists `[Vaj, Vbj, Wj]` from the file.
+You can use `ShortestPath.InputReader.read/1` for obtaining *N*, *M*, the list of the lists `[Vaj, Vbj, Wj]` from the file.
 
 ## Output
 

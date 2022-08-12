@@ -2,12 +2,17 @@ defmodule ShortestPath.InputReader do
   @support_in "test/support/in"
 
   @doc """
-  Reads a given file and returns a tuple of *N*, *M* and the list of the lists `[Vaj, Vbj, Wj]`.
+  Reads a given file and returns a tuple of *N*, *M* and the list of the lists `[Vaj, Vbj, Wj]` in `test/support/in`.
   """
   def read(file) do
-    stream =
-      Path.join(@support_in, file)
-      |> File.stream!([:read], :line)
+    read_directly(Path.join(@support_in, file))
+  end
+
+  @doc """
+  Reads a given file and returns a tuple of *N*, *M* and the list of the lists `[Vaj, Vbj, Wj]` in anywhere in the file system.
+  """
+  def read_directly(file) do
+    stream = File.stream!(file, [:read], :line)
 
     [n, m] =
       stream

@@ -68,7 +68,7 @@ See the directory `test/support/out`.
 mix run -r bench/shortest_path_bench.exs
 ```
 
-If `ips` and `average` are `0.50` and `2.00s`, respectvely, it means time out of the execution. 
+If `ips` and `average` are `0.50` and `2.00s`, respectively, it means time out of the execution. 
 
 ```
 ##### With input N,M = 1000,499500 #####

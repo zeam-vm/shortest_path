@@ -14,7 +14,7 @@ Find the shortest path between all vertices.
 
 $$ 2 \leq N $$
 
-$$ 1 \leq M $$
+$$ 1 \leq M \leq \frac{1}{2}N(N-1)$$
 
 $$ 1 \leq i, a, b \leq N$$
 
@@ -61,6 +61,20 @@ See the directory `test/support/in`.
 See the directory `test/support/out`.
 
 ## Usage
+
+### Run benchmarks
+
+```
+mix run -e bench/shortest_path_bench.exs
+```
+
+If `ips` and `average` are `0.50` and `2.00s`, respectvely, it means time out of the execution. 
+
+```
+##### With input N,M = 1000,499500 #####
+Name                     ips        average  deviation         median         99th %
+Dijkstra.MainA          0.50         2.00 s     ±0.02%         2.00 s         2.00 s
+```
 
 ### Generate an input case
 

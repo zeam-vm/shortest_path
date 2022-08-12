@@ -2,6 +2,14 @@ defmodule ShortestPath.Dijkstra.MainA do
   @behaviour ShortestPath.SolverFromWeightedEdgeList
   @inf 1_000_000_000_000
 
+  @doc """
+  Returns a list of lists of weights between nodes.
+  """
+  @spec main(
+          pos_integer(),
+          pos_integer(),
+          ShortestPath.SolverFromWeightedEdgeList.weighted_edge_list()
+        ) :: ShortestPath.SolverFromWeightedEdgeList.weight_between_nodes_list()
   @impl true
   def main(n, _, vicinities) do
     # 各頂点
@@ -28,9 +36,8 @@ defmodule ShortestPath.Dijkstra.MainA do
     end
   end
 
-  @spec dijkstra(list(), map(), map()) :: list()
-  def dijkstra(unsearched, node_map, acc)
-
+  @spec dijkstra(list(), map(), map()) ::
+          ShortestPath.SolverFromWeightedEdgeList.weight_between_nodes_list()
   def dijkstra([], _, acc), do: acc |> Map.values()
 
   def dijkstra(unsearched, node_map, acc) do

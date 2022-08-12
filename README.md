@@ -36,7 +36,7 @@ Va1 Vb1 W1
 VaM VbM WM
 ```
 
-You can use `ShortestPath.InputReader.read/1` for obtaining $N$, $M$, the list of the lists `[Vaj, Vbj, Wj]` from the file.
+You can use `ShortestPath.InputReader.read/1` for obtaining *N*, *M*, the list of the lists `[Vaj, Vbj, Wj]` from the file.
 
 ## Output
 
@@ -68,7 +68,7 @@ See the directory `test/support/out`.
 mix run -r bench/shortest_path_bench.exs
 ```
 
-If `ips` and `average` are `0.50` and `2.00s`, respectvely, it means time out of the execution. 
+If `ips` and `average` are `0.50` and `2.00s`, respectively, it means time out of the execution. 
 
 ```
 ##### With input N,M = 1000,499500 #####

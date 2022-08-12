@@ -127,7 +127,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
 
       if w < current_weight(start_node, n) do
         write_graph(start_node, n, w, false)
-        ^w = current_weight(start_node, n)
+        # ^w = current_weight(start_node, n)
       end
     end)
 
@@ -217,6 +217,9 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
           add_entry(entry, n2, w, raise_if_same_node?)
       end
     end)
+    |> case do
+      {:atomic, _} -> {:atomic, :ok}
+    end
   end
 
   def add_entry(entry, n, w, raise_if_same_node?) do

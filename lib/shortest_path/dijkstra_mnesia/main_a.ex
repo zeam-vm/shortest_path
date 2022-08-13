@@ -94,13 +94,11 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     |> Enum.take(m)
 
     for start_node <- 1..n do
-      #Task.async(fn ->
-        unsearched = edges_from(start_node)
-
-        dijkstra(start_node, unsearched)
-      #end)
+      unsearched = edges_from(start_node)
+      dijkstra(start_node, unsearched)
     end
-    #|> Enum.map(&Task.await/1)
+
+    # |> Enum.map(&Task.await/1)
 
     "#{n}\n" <>
       (1..(n - 1)
@@ -114,27 +112,56 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
        |> Enum.join("\n"))
   end
 
-  def dijkstra(_start_node, []), do: []
-  def dijkstra(start_node, node_list) do
-    updated_node_list =
-      node_list
-      |> Enum.map(fn {node, w0} ->
-          edges_from(node)
-          |> Enum.map(fn {n, w} ->
-              w_new = w0 + current_weight(node, n)
+  def dijkstra(_vs, []), do: []
 
-              if w_new < w do
-                write_graph(start_node, n, w_new, false)
-                n
+  def dijkstra(vs, unsearched) do
+    Stream.unfold(
+      {unsearched, %{}},
+      fn
+        {[], _} ->
+          nil
+
+        {[{vn, w_vs_vn} | unsearched], cache} ->
+          result =
+            edges_from(vn)
+            |> Enum.reject(fn {vnn, _w_vn_vnn} -> vnn == vs end)
+            |> Enum.map(&{&1, {vn, w_vs_vn}, vs, unsearched, cache})
+            |> Enum.map(fn {{vnn, w_vn_vnn}, {vn, w_vs_vn}, vs, unsearched, cache} ->
+              w_vs_vnn = current_weight(vs, vnn)
+              w_vs_vnn_new = w_vs_vn + w_vn_vnn
+              {{w_vs_vnn, w_vs_vnn_new}, {vnn, w_vn_vnn}, {vn, w_vs_vn}, vs, unsearched, cache}
+            end)
+            |> Enum.map(fn {{w_vs_vnn, w_vs_vnn_new}, {vnn, _w_vn_vnn}, {_vn, _w_vs_vn}, vs,
+                            unsearched, cache} ->
+              if w_vs_vnn_new < w_vs_vnn do
+                write_graph(vs, vnn, w_vs_vnn_new, false)
+
+                {[{vnn, w_vs_vnn_new}],
+                 Enum.sort([{vnn, w_vs_vnn_new} | unsearched], fn {_v1, w1}, {_v2, w2} ->
+                   w1 < w2
+                 end), cache}
               else
-                nil
+                {[], unsearched, cache}
               end
-          end)
-      end)
-      |> List.flatten()
-      |> Enum.reject(&is_nil(&1))
+            end)
+            |> List.flatten()
 
-    dijkstra(start_node, updated_node_list)
+          result =
+            Enum.map(result, fn {_, unsearched_new, _} -> unsearched_new end)
+            |> List.flatten()
+
+          unsearched =
+            result
+            |> Enum.reduce(unsearched, fn {v, w}, acc ->
+              [{v, w} | acc]
+              |> Enum.sort(fn {_, w1}, {_, w2} -> w1 < w2 end)
+              |> Enum.uniq_by(fn {v, _} -> v end)
+            end)
+
+          {result, {unsearched, cache}}
+      end
+    )
+    |> Enum.to_list()
   end
 
   def edges_from(n) do

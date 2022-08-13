@@ -95,11 +95,7 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
 
     for start_node <- 1..n do
       #Task.async(fn ->
-        unsearched =
-          edges_from(start_node)
-          |> Enum.sort(fn n1, n2 ->
-            current_weight(start_node, n1) < current_weight(start_node, n2)
-          end)
+        unsearched = edges_from(start_node)
 
         dijkstra(start_node, unsearched)
       #end)
@@ -122,16 +118,13 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
   def dijkstra(start_node, node_list) do
     updated_node_list =
       node_list
-      |> Enum.map(fn node ->
+      |> Enum.map(fn {node, w0} ->
           edges_from(node)
-          |> Enum.sort(fn n1, n2 ->
-            current_weight(start_node, n1) < current_weight(start_node, n2)
-          end)
-          |> Enum.map(fn n ->
-              w = current_weight(start_node, node) + current_weight(node, n)
+          |> Enum.map(fn {n, w} ->
+              w_new = w0 + current_weight(node, n)
 
-              if w < current_weight(start_node, n) do
-                write_graph(start_node, n, w, false)
+              if w_new < w do
+                write_graph(start_node, n, w_new, false)
                 n
               else
                 nil
@@ -151,16 +144,19 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     end)
     |> case do
       {:atomic, edges} -> edges
-      {:aborted, {:no_exists, Graph}} -> @inf
+      {:aborted, {:no_exists, Graph}} -> []
     end
+    |> Enum.sort(fn {_n1, w1}, {_n2, w2} ->
+      w1 < w2
+    end)
   end
 
   defp edges_from_s(acc, :end), do: acc
 
   defp edges_from_s(acc, e) do
-    [{GraphEntry, ^e, left, right, n, _w}] = Mnesia.read({GraphEntry, e})
+    [{GraphEntry, ^e, left, right, n, w}] = Mnesia.read({GraphEntry, e})
 
-    acc = edges_from_s([n | acc], left)
+    acc = edges_from_s([{n, w} | acc], left)
     edges_from_s(acc, right)
   end
 

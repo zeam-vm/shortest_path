@@ -123,28 +123,21 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
     updated_node_list =
       node_list
       |> Enum.map(fn node ->
-        #Task.async(fn ->
           edges_from(node)
           |> Enum.sort(fn n1, n2 ->
             current_weight(start_node, n1) < current_weight(start_node, n2)
           end)
           |> Enum.map(fn n ->
-            #Task.async(fn ->
               w = current_weight(start_node, node) + current_weight(node, n)
 
               if w < current_weight(start_node, n) do
                 write_graph(start_node, n, w, false)
                 n
-                # ^w = current_weight(start_node, n)
               else
                 nil
               end
-            #end)
           end)
-          #|> Enum.map(&Task.await/1)
-        #end)
       end)
-      #|> Enum.map(&Task.await/1)
       |> List.flatten()
       |> Enum.reject(&is_nil(&1))
 

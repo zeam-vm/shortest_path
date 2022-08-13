@@ -98,8 +98,6 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
       dijkstra(start_node, unsearched)
     end
 
-    # |> Enum.map(&Task.await/1)
-
     "#{n}\n" <>
       (1..(n - 1)
        |> Enum.map(fn n1 ->
@@ -125,14 +123,10 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
           result =
             edges_from(vn)
             |> Enum.reject(fn {vnn, _w_vn_vnn} -> vnn == vs end)
-            |> Enum.map(&{&1, {vn, w_vs_vn}, vs, unsearched, cache})
-            |> Enum.map(fn {{vnn, w_vn_vnn}, {vn, w_vs_vn}, vs, unsearched, cache} ->
+            |> Enum.map(fn {vnn, w_vn_vnn} ->
               w_vs_vnn = current_weight(vs, vnn)
               w_vs_vnn_new = w_vs_vn + w_vn_vnn
-              {{w_vs_vnn, w_vs_vnn_new}, {vnn, w_vn_vnn}, {vn, w_vs_vn}, vs, unsearched, cache}
-            end)
-            |> Enum.map(fn {{w_vs_vnn, w_vs_vnn_new}, {vnn, _w_vn_vnn}, {_vn, _w_vs_vn}, vs,
-                            unsearched, cache} ->
+
               if w_vs_vnn_new < w_vs_vnn do
                 write_graph(vs, vnn, w_vs_vnn_new, false)
 
@@ -144,10 +138,8 @@ defmodule ShortestPath.DijkstraMnesia.MainA do
                 {[], unsearched, cache}
               end
             end)
-            |> List.flatten()
-
-          result =
-            Enum.map(result, fn {_, unsearched_new, _} -> unsearched_new end)
+            |> Enum.map(&Task.await/1)
+            |> Enum.map(fn {_, unsearched_new, _} -> unsearched_new end)
             |> List.flatten()
 
           unsearched =
